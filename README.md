@@ -2,7 +2,8 @@
 DGSVis: Visual Analysis of Hierarchical Snapshots in Dynamic Graph
 > This repo is the implementation of DGSVis
 
-![image](https://github.com/BaofengChang/DGSVis/raw/main/Figs/teaser.jpg){:height="100px" width="400px"}
+
+<img src="https://github.com/BaofengChang/DGSVis/raw/main/Figs/teaser.jpg" width="100px">
 
 ### Abstract 
 Dynamic graph visualization attracts researchers’ concentration as it represents time-varying relationships between entities
