@@ -2,6 +2,8 @@
 DGSVis: Visual Analysis of Hierarchical Snapshots in Dynamic Graph
 > This repo is the implementation of DGSVis
 
+![image](https://github.com/BaofengChang/DGSVis/raw/main/Figs/teaser.jpg)
+
 ### Abstract 
 Dynamic graph visualization attracts researchers’ concentration as it represents time-varying relationships between entities
 in multiple domains (e.g., social media analysis, academic cooperation analysis, team sports analysis). Integrating visual analytic
@@ -15,4 +17,4 @@ It is equipped with the overview and details for visualizing hierarchical snapsh
 efficiency of our proposed methods for this type of dynamic graph data, we introduce two case studies based on basketball player
 networks in a competition. In addition, we conduct an evaluation and receive exciting feedback from experienced visualization experts
 
-![image](https://github.com/BaofengChang/DGSVis/raw/main/Figs/teaser.jpg)
+
