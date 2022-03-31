@@ -1,6 +1,6 @@
 # DGSVis-ieee-vis-2022-Submission-ID-1053
 DGSVis: Visual Analysis of Hierarchical Snapshots in Dynamic Graph
-This repo is the implementation of DGSVis
+> This repo is the implementation of DGSVis
 
 ### Abstract 
 Dynamic graph visualization attracts researchers’ concentration as it represents time-varying relationships between entities
