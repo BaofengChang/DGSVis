@@ -1,0 +1,245 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en" style="width: 100%; height: 99%">
+<head>
+    <meta charset="UTF-8">
+    <title>tree</title>
+
+    <link rel="stylesheet" href={% static 'css/bootstrap.min.css' %}>
+    <link rel="stylesheet" href={% static 'css/jquery-ui.min.css' %}>
+    <link rel="stylesheet" href={% static 'css/divLayoutV2.css' %}>
+    <link rel="stylesheet" href={% static 'css/styleV2.css' %}>
+
+    <script src={% static 'js/jquery-3.6.0.js' %}></script>
+    <script src={% static 'js/jquery-ui.min.js' %}></script>
+    <script src={% static 'js/d3.v4.js' %}></script>
+    <script src={% static 'js/bootstrap.min.js' %}></script>
+    {#    <script src={% static 'js/bootstrap-slider.min.js' %}></script>#}
+
+    {#    <script src={% static 'jsV2/draw-left-view.js' %}></script>#}
+    {#    <script src={% static 'jsV2/draw-left-view-matrix.js' %}></script>#}
+    {#    <script src={% static 'jsV2/draw-left-view-scatterplot.js' %}></script>#}
+    {##}
+    {#    <script src={% static 'jsV2/draw-center-top-view.js' %}></script>#}
+    {#    <script src={% static 'jsV2/draw-center-top-view-time-bar.js' %}></script>#}
+    {#    <script src={% static 'jsV2/draw-center-top-view-score-event.js' %}></script>#}
+    {#    <script src={% static 'jsV2/draw-center-top-view-player.js' %}></script>#}
+    {#    <script src={% static 'jsV2/draw-center-top-view-round.js' %}></script>#}
+    {##}
+    {#    <script src={% static 'jsV2/draw-center-bottom-view.js' %}></script>#}
+    {#    <script src={% static 'jsV2/draw-center-bottom-view-tree.js' %}></script>#}
+
+    <style>
+        .g_clicked {
+            border: 1px #000000;
+        }
+
+        .g_click {
+            border: 0;
+        }
+
+        .link {
+            fill: none;
+            stroke-width: 0.2;
+            stroke: #5c636a;
+        }
+
+        #nodeChangeSlider .ui-slider-range {
+            background-color: #0fcc45;
+        }
+
+        #linkChangeSlider .ui-slider-range {
+            background-color: #ccc011;
+        }
+
+        #timeGapSlider .ui-slider-range {
+            background-color: #1258cc;
+        }
+
+        #timeSliceSlider .ui-slider-range {
+            background-color: #506c6b;
+        }
+
+        .stop-left {
+            stop-color: #ffede0; /* Indigo */
+        }
+
+        .stop-right {
+            stop-color: #ff2a32; /* Teal */
+        }
+
+        .filled1 {
+            fill: url(#fillGradient1);
+        }
+
+        .stop-left2 {
+            stop-color: #eff3ff; /* Indigo */
+        }
+
+        .stop-right2 {
+            stop-color: #08519c; /* Teal */
+        }
+
+        .filled2 {
+            fill: url(#fillGradient2);
+        }
+
+        .clickedRoot {
+            border: 2px #1c1f23 dashed;
+        }
+
+
+    </style>
+
+    <script src={% static 'test-js/divideTime.js' %}></script>
+    <script src={% static 'test-js/drawDetails.js' %}></script>
+
+</head>
+<body>
+<div id="button">
+    <button onclick="divideTimeToTree()">merge by threshold</button>
+    <div style="width: 200px; margin: 10px">
+        <div id="nodeChangeThreshold">
+            <input class="form-check-input" type="checkbox" value="" id="nodeChangeCheck" checked>
+            Node Change <=
+            <span id="nodeChangeThresholdText">10</span>
+            %
+        </div>
+        <div id="nodeChangeSlider"></div>
+        <div id="linkChangeThreshold">
+            <input class="form-check-input" type="checkbox" value="" id="linkChangeCheck" checked>
+            Link Change <=
+            <span id="linkChangeThresholdText">10</span>
+            %
+        </div>
+        <div id="linkChangeSlider"></div>
+        <div id="timeGapThreshold">
+            <input class="form-check-input" type="checkbox" value="" id="timeGapCheck" checked>
+            Time Gap <=
+            <span id="timeGapThresholdText">1</span>
+            s
+        </div>
+        <div id="timeGapSlider"></div>
+        {#        <label for="customRange1" class="form-label">Example range</label>#}
+        {#        <input type="range" class="form-range" min="0" max="5" step="1" id="customRange3">#}
+        {##}
+        {##}
+        {#        <input id="ex1" data-slider-id='ex1Slider' type="text" data-slider-min="0" data-slider-max="20"#}
+        {#               data-slider-step="1" data-slider-value="14"/>#}
+    </div>
+</div>
+<div id="button">
+    <button onclick="divideTimeToTreeByAverageTime()">merge by time</button>
+    <div style="width: 200px; margin-left: 10px">
+        <div id="time">
+            Time Slice =
+            <span id="timeSliceValue">5</span>
+        </div>
+        <div id="timeSliceSlider"></div>
+        {#        <label for="customRange1" class="form-label">Example range</label>#}
+        {#        <input type="range" class="form-range" min="0" max="5" step="1" id="customRange3">#}
+        {##}
+        {##}
+        {#        <input id="ex1" data-slider-id='ex1Slider' type="text" data-slider-min="0" data-slider-max="20"#}
+        {#               data-slider-step="1" data-slider-value="14"/>#}
+    </div>
+</div>
+<div id="div-tree" style="width: 1500px; height: 1000px; overflow-y:auto; overflow-x: hidden">
+    <svg id="svg-tree"></svg>
+
+</div>
+<div id="div-details" style="width: 800px; height: 1000px; float: left">
+    <svg id="svg-details"></svg>
+</div>
+<div id="div-court" style=" width: 800px; height: 800px">
+    <svg id="svg-court" style="margin: 10px; background-image: url({% static 'img/nbacourt2.jpg' %});
+            background-size: 100%; background-repeat:no-repeat;"></svg>
+</div>
+
+<script>
+    console.log(1);
+    $(function () {
+
+        $("#nodeChangeSlider").slider({
+            orientation: "horizontal",
+            range: "min",
+            max: 100,
+            {#min:0,#}
+            value: 10,
+            step: 5,
+            slide: function (event, ui) {
+                $("#nodeChangeThresholdText").text(ui.value);
+            }
+        });
+
+        $("#linkChangeSlider").slider({
+            orientation: "horizontal",
+            range: "min",
+            max: 100,
+            {#min:0,#}
+            value: 10,
+            step: 5,
+            slide: function (event, ui) {
+                $("#linkChangeThresholdText").text(ui.value);
+            }
+        });
+        $("#timeGapSlider").slider({
+            orientation: "horizontal",
+            range: "min",
+            max: 10,
+            min: 0,
+            value: 1,
+            step: 0.5,
+            slide: function (event, ui) {
+                $("#timeGapThresholdText").text(ui.value);
+            }
+        });
+
+        $("#timeSliceSlider").slider({
+            orientation: "horizontal",
+            range: "min",
+            max: 10,
+            min: 2,
+            value: 5,
+            step: 1,
+            slide: function (event, ui) {
+                $("#timeSliceValue").text(ui.value);
+            }
+        });
+        {#$( "#nodeChangeSlider").slider('value', 0);#}
+
+
+    })
+
+    {#let mySlider = $("#customRange3").slider();#}
+    {##}
+    {#    // Call a method on the slider#}
+    {#    let value = $("#customRange3").on('change', function () {#}
+    {#        console.log(1)#}
+    {#    });#}
+    {##}
+    {#    console.log(value)#}
+
+    {##}
+    {#    $('#ex1').slider({#}
+    {#        formatter: function (value) {#}
+    {#            return 'Current value: ' + value;#}
+    {#        }#}
+    {#    });#}
+    {##}
+    {##}
+    {#    $('#customRange3').slider().on('change', function (event) {#}
+    {#        var a = event.value.newValue;#}
+    {#        var b = event.value.oldValue;#}
+    {#        console.log(a, b)#}
+    {#    })#}
+    {#$('#customRange1').slider()#}
+    {#执行画图函数#}
+    {#    画起点树图#}
+    drawTreeRootNode();
+    drawDetailsV2('[[69, 70, 71], [72, 73, 74, 75, 76, 77]]');
+
+    draw_court();
+</script>
+</body>
+</html>

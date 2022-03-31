@@ -1,0 +1,71 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en" style="width: 99%; height: 99%">
+<head>
+    <meta charset="UTF-8">
+    <title>DGVis</title>
+
+    <link rel="stylesheet" href={% static 'css/divLayout.css' %}>
+    <link rel="stylesheet" href={% static 'css/style.css' %}>
+
+    <script src={% static 'js/jquery-3.6.0.js' %}></script>
+    <script src={% static 'js/d3.v4.js' %}></script>
+
+
+    <script src={% static 'js/draw-div-players.js'%}></script>
+    <script src={% static 'js/draw-div-scatterplot.js'%}></script>
+    <script src={% static 'js/draw-div-score.js'%}></script>
+    <script src={% static 'js/draw-div-court.js'%}></script>
+</head>
+<body style="width: 100%; height: 100%">
+<div id="div_container" class="div_container">
+    <div id="div_left" class="div_left">
+        <div id="div_title" class="div_title">
+            <h3>NAME</h3>
+        </div>
+        <div id="div_player" class="div_player"></div>
+        <div id="div_scatterplot" class="div_gameScatterPlot"></div>
+
+
+    </div>
+<div id="div_center_right" class="div_center_right">
+    <div id="div_score" class="div_score">
+        <svg id="svg_score"></svg>
+    </div>
+
+    <div id="div_center" class="div_center">
+        <div id="div_court" class="div_court">
+            <svg id="svg_court" style=" background-image: url({% static 'img/nbacourt2.jpg'%}); background-size: 100% 100%;width: 100px; height: 100px; opacity: 0">
+            </svg>
+{#            <img style="width: 100px; height: 100px; pointer-events: none; opacity: 0;" src={% static 'img/nbacourt2.jpg' %}>#}
+        </div>
+        <div id="div_graphList" class="div_graphList"></div>
+    </div>
+        <div id="div_right" class="div_right"></div>
+</div>
+
+
+
+
+</div>
+<script>
+
+    // 初始化界面
+    function initWebPage() {
+        // 画 运动员 数据
+        {#draw_div_players();#}
+        // 画 散点 图
+        {#draw_div_scatter();#}
+        // 画 比分 图
+        {#draw_div_score();#}
+        {#draw_div_scoreV2();#}
+        draw_div_score();
+        // 画 场地 图
+        draw_div_court();
+
+    }
+
+    initWebPage()
+</script>
+</body>
+</html>

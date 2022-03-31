@@ -1,0 +1,23 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <script src={% static 'js/jquery-3.6.0.js' %}></script>
+    <script src={% static 'js/d3.v4.js' %}></script>
+
+    <script src={% static 'js/draw-div-score.js'%}></script>
+</head>
+<body>
+<div id="div_score" style="width: 90%; height: 1000px">
+    <svg id="svg_score"></svg>
+</div>
+
+<script>
+    draw_div_score()
+</script>
+
+</body>
+</html>

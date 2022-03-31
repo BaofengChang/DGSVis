@@ -1,0 +1,283 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en" class="html">
+<head>
+    <meta charset="UTF-8">
+    <title>DGSVis</title>
+
+    <link rel="stylesheet" href={% static 'css/bootstrap.min.css' %}>
+    <link rel="stylesheet" href={% static 'css/jquery-ui.min.css' %}>
+    <link rel="stylesheet" href={% static 'css/lasso.style.css' %}>
+    <link rel="stylesheet" href={% static 'css/divLayoutV4.css' %}>
+
+    <link rel="stylesheet" href={% static 'css/styleV4.css' %}>
+
+    <script src={% static 'js/jquery-3.6.0.js' %}></script>
+    <script src={% static 'js/jquery-ui.min.js' %}></script>
+    <script src={% static 'js/d3.v4.js' %}></script>
+    <script src={% static 'js/bootstrap.min.js' %}></script>
+    <script src={% static 'js/lasso.min.js' %}></script>
+
+    {#没有实现的功能#}
+    <script src={% static 'jsV4/waiting-finishing-function.js' %}></script>
+    {#进度条#}
+    <script src={% static 'jsV4/initial-slider-function.js' %}></script>
+
+
+    <script src={% static 'jsV4/draw-left-view.js' %}></script>
+    <script src={% static 'jsV4/draw-left-view-matrix.js' %}></script>
+    <script src={% static 'jsV4/draw-left-view-matrix-button.js' %}></script>
+    <script src={% static 'jsV4/draw-left-view-scatter.js' %}></script>
+    <script src={% static 'jsV4/draw-left-view-scatter-button.js' %}></script>
+
+    <script src={% static 'jsV4/draw-center-event-view.js' %}></script>
+    <script src={% static 'jsV4/draw-center-event-view-button.js' %}></script>
+
+
+    <script src={% static 'jsV4/draw-tree-view.js' %}></script>
+    <script src={% static 'jsV4/draw-tree-view-init.js' %}></script>
+    <script src={% static 'jsV4/draw-tree-view-snapshot-by-feature.js' %}></script>
+    <script src={% static 'jsV4/draw-tree-view-snapshot-by-time-gap.js' %}></script>
+
+
+    <script src={% static 'jsV4/draw-right-view.js' %}></script>
+    <script src={% static 'jsV4/draw-right-view-court.js' %}></script>
+    <script src={% static 'jsV4/draw-right-view-court-button.js' %}></script>
+    <script src={% static 'jsV4/draw-right-view-details-player.js' %}></script>
+    <script src={% static 'jsV4/draw-right-view-details-indicators.js' %}></script>
+    <script src={% static 'jsV4/draw-right-view-details-button.js' %}></script>
+
+
+</head>
+<body class="body">
+<div id="div-left" class="div-left">
+    <div class="navbar">
+        <div class="system-name">
+            <text style="float: left; font-size: 20px">DGSVis -- Dynamic Graph Snapshot Visualization</text>
+        </div>
+    </div>
+    <div class="menu">
+        <div style="float: left; width: 100%;  border-top-left-radius: 10px; border-top-right-radius: 10px;background-color: #b8cfff;">
+            <text style="margin-left: 10px; font-size: 20px">System Menu</text>
+
+        </div>
+        <div id="div-load-data" style="margin-top: 6px; width: 100%">
+            <text style="float: left; margin-left: 10px; margin-top: 10px">Dynamic Graph Data:</text>
+            <div style="float: left; margin-left: 10px; margin-top: 5px; width: 160px">
+                <select id="select-gameID" class="form-select"
+                        aria-label="Default select example"
+                        style="width: 150px; height: 35px; margin-top: 0px;">
+                    <option selected value="0021500003">NOP-GSW</option>
+{#                    <option value="0021500001">a-GSW</option>#}
+                </select>
+            </div>
+            <button style="float: right; margin-top: 8px; margin-right: 20px" id="btn-load-data" type="button"
+                    class="btn btn-outline-secondary btn-sm" title="Load Dataset"
+                    onclick="btn_load_dataset()">
+                Loading
+            </button>
+
+
+        </div>
+        {#        <div id="div-load-data" style="margin-top: 6px; width: 100%">#}
+        {#            <div style="float: left; width: 200px; margin-top: 5px; padding-left: 10px;  pointer-events: none;">#}
+        {#                <text>Dynamic Graph Dataset:</text>#}
+        {#            </div>#}
+        {#            <div style="float: left; width: 160px">#}
+        {#                <select id="select-gameID" class="form-select" aria-label="Default select example"#}
+        {#                        style="width: 150px; height: 35px; margin-top: 0px;">#}
+        {#                    <option selected value="0021500003">NOP-GSW</option>#}
+        {#                    <option value="0021500001">a-GSW</option>#}
+        {#                </select>#}
+        {#            </div>#}
+        {#            <div style="float: left; padding-top: 2px; padding-left: 23px;">#}
+        {#                <button style="float: right; margin-right: 20px" id="btn-load-data" type="button"#}
+        {#                        class="btn btn-secondary btn-sm" title="Load Dataset"#}
+        {#                        onclick="btn_load_dataset()">#}
+        {#                    Load Dataset#}
+        {#                </button>#}
+        {#            </div>#}
+        {#        </div>#}
+{#        <div style="float: left; width: 100%">#}
+{#            <hr style="margin-top: 5px; margin-bottom: 5px">#}
+{#        </div>#}
+
+        <div style="width: 100%; float: left; padding-left: 10px">
+            {#            <div style="margin-top: 10px">#}
+            {#                <text style="width: 200px">Load Brushed Timestamp Graph</text>#}
+            {#                <button id="load-tree-root" value='[0, 1000]' style="float: right; margin-right: 20px"#}
+            {#                        type="button" class="btn btn-outline-secondary btn-sm" onclick="draw_init_tree_data()">#}
+            {#                    Load Root Tree#}
+            {#                </button>#}
+            {#            </div>#}
+            <div style="float: left; width: 97%">
+                <hr style="margin-top: 10px; margin-bottom: 10px">
+            </div>
+            <text style="font-weight:bold;">Extracting SnapShots By Graph Change</text>
+            <button style="float: right; margin-right: 20px" type="button" class="btn btn-outline-secondary btn-sm"
+                    onclick="divide_snapshot_by_feature()">
+{#                Slicing SnapShot#}
+                Extracting
+            </button>
+            <div id="nodeChangeThreshold" style="margin-top: 10px">
+                <input class="form-check-input" type="checkbox" value="" id="nodeChangeCheck" checked>
+                Node Change <=
+                <span id="nodeChangeThresholdText">10</span>
+                %
+            </div>
+            <div id="nodeChangeSlider" style="width: 90%; margin-top: 5px"></div>
+            <div id="linkChangeThreshold" style="margin-top: 5px">
+                <input class="form-check-input" type="checkbox" value="" id="linkChangeCheck" checked>
+                Link Change <=
+                <span id="linkChangeThresholdText">10</span>
+                %
+            </div>
+            <div id="linkChangeSlider" style="width: 90%; margin-top: 5px"></div>
+            <div id="timeGapThreshold" style="margin-top: 5px">
+                <input class="form-check-input" type="checkbox" value="" id="timeGapCheck" checked>
+                Time Gap <=
+                <span id="timeGapThresholdText">1</span>
+                s
+            </div>
+            <div id="timeGapSlider" style="width: 90%; margin-top: 5px"></div>
+
+            <div style="float: left; width: 97%">
+                <hr style="margin-top: 15px; margin-bottom: 15px">
+            </div>
+
+            <text style="font-weight:bold;">Extracting SnapShots By Timestamp Number</text>
+            <button style="float: right; margin-right: 20px" type="button" class="btn btn-outline-secondary btn-sm"
+                    onclick="divide_snapshot_by_time_gap()">
+                Extracting
+{#                Slicing SnapShot#}
+            </button>
+            <div id="time" style="margin-top: 10px">
+                Timestamp Number =
+                <span id="timeSliceValue">5</span>
+            </div>
+            <div id="timeSliceSlider" style="width: 90%; margin-top: 5px"></div>
+        </div>
+        {#        <div style="float: left; width: 100%">#}
+        {#            <hr style="margin-top: 8px; margin-bottom: 5px">#}
+        {#        </div>#}
+
+    </div>
+    {#    矩阵视图#}
+    <div id="matrix-scatter" class="matrix-scatter">
+        <div style="float: left; width: 100%; border-radius: 10px; background-color: #FFFFFF;">
+            <div style="float: left; width: 100%;  border-top-left-radius: 10px; border-top-right-radius: 10px;background-color: #b8cfff;">
+                <text style="margin-left: 10px; font-size: 20px">Snapshot Matrix</text>
+                <button id="matrix_zoom" clicked='false' style="float: right; margin-right: 20px;"
+                        class="btn btn-outline-secondary btn-sm" onclick="matrix_zoom()">Zoom
+                </button>
+                {#                <button style="float: right; margin-right: 20px;" class="btn btn-outline-secondary btn-sm">Focus</button>#}
+            </div>
+
+            <svg id="svg-matrix"></svg>
+        </div>
+
+        {#        散点图#}
+        <div style="float: left; margin-top: 5px; width: 100%; border-radius: 10px; background-color: #FFFFFF;">
+            <div style="float: left; width: 100%;  border-top-left-radius: 10px; border-top-right-radius: 10px;background-color: #b8cfff;">
+                <text style="margin-left: 10px; font-size: 20px">Snapshot Scatter Plot</text>
+                <button  style="float: right; margin-right: 20px;" class="btn btn-outline-secondary btn-sm"
+                        onclick="scatter_zoom()">Zoom
+                </button>
+                <button style="float: right; margin-right: 10px;" class="btn btn-outline-secondary btn-sm"
+                        onclick="scatter_brush()">Brush
+                </button>
+                <button id="scatter_focus" style="float: right; margin-right: 10px;"
+                        class="btn btn-outline-secondary btn-sm" value='0' onclick="scatter_focus()">Focus
+                </button>
+            </div>
+            <svg id="svg-scatter"></svg>
+        </div>
+    </div>
+</div>
+<div id="div-center" class="div-center">
+
+    {#    事件视图#}
+    <div id="div-event" class="div-event">
+        <div style="float: left; width: 100%;  border-top-left-radius: 10px; border-top-right-radius: 10px;background-color: #b8cfff;">
+            <text style="margin-left: 10px; font-size: 20px">Snapshot Event Diagram</text>
+            {#                <button style="float: right; margin-right: 20px;" class="btn btn-outline-secondary btn-sm">Zoom</button>#}
+            {#            <button style="float: right; margin-right: 20px;" class="btn btn-outline-secondary btn-sm">Brush</button>#}
+            <button id="event_focus_btn" style="float: right; margin-right: 20px;"
+                    class="btn btn-outline-secondary btn-sm" onclick="event_focus_function()">Focus
+            </button>
+        </div>
+        <svg id="svg-event"></svg>
+    </div>
+    <div id="div-tree" class="div-tree">
+        <div style="float: left; width: 100%;  border-top-left-radius: 10px; border-top-right-radius: 10px;background-color: #b8cfff;">
+            <text style="margin-left: 10px; font-size: 20px">Snapshot Generation Tree Diagram</text>
+             <button id="tree_zoom" clicked = 'false' style="float: right; margin-right: 20px;" class="btn btn-outline-secondary btn-sm"
+                        onclick="tree_zoom()">Zoom
+                </button>
+            {#                <button style="float: right; margin-right: 20px;" class="btn btn-outline-secondary btn-sm">Zoom</button>#}
+            {#            <button  style="float: right; margin-right: 20px;" class="btn btn-outline-secondary btn-sm" onclick='event_brush()'>Brush</button>#}
+            {#            <button id="tree_focus" style="float: right; margin-right: 20px;" class="btn btn-outline-secondary btn-sm" onclick="tree_focus()">Focus</button>#}
+        </div>
+
+        <svg id="svg-tree"></svg>
+
+    </div>
+</div>
+<div id="div-right" class="div-right">
+    <div id="div-court" class="div-court">
+        <div id="node-link-diagram-name"
+             style="float: left; width: 100%;  border-top-left-radius: 10px; border-top-right-radius: 10px;background-color: #b8cfff;">
+            <text style="margin-left: 10px; font-size: 20px">Snapshot Node-Link Diagram</text>
+            {#                <button style="float: right; margin-right: 20px;" class="btn btn-outline-secondary btn-sm">Zoom</button>#}
+            {#            <button style="float: right; margin-right: 20px;" class="btn btn-outline-secondary btn-sm">Brush#}
+            {#            </button>#}
+            <button id="court_path" style="float: right; margin-right: 20px;" class="btn btn-outline-secondary btn-sm"
+                    onclick="court_path()">Path
+            </button>
+            <button id="court_link" style="float: right; margin-right: 10px;" class="btn btn-outline-secondary btn-sm"
+                    onclick="court_link()">Link
+            </button>
+            <button id="court_aggregate" style="float: right; margin-right: 10px;"
+                    class="btn btn-outline-secondary btn-sm" onclick="court_aggregate()">Aggregate</button>
+            <button id="court_focus" style="float: right; margin-right: 10px;" class="btn btn-outline-secondary btn-sm"
+                    onclick="court_redisplay()">Redisplay</button>
+        </div>
+        <div style="float: left; width: 100%;">
+            <svg id="svg-court" style="margin: 5px; background-image: url({% static 'img/nbacourt2.jpg' %});
+                    background-size: 100%; background-repeat:no-repeat;"></svg>
+        </div>
+        <div style="float: left; width: 100%; overflow-x: auto; overflow-y: hidden;">
+            <svg id="svg-court-mini" style="margin-left: 5px;"></svg>
+        </div>
+
+    </div>
+
+    <div id="div-details" class="div-details">
+        <div id="details-diagram-name"
+             style="float: left; width: 100%;  border-top-left-radius: 10px; border-top-right-radius: 10px;background-color: #b8cfff;">
+            <text style="margin-left: 10px; font-size: 20px">Snapshot Details Diagram</text>
+            {#                <button style="float: right; margin-right: 20px;" class="btn btn-outline-secondary btn-sm">Zoom</button>#}
+            {#            <button style="float: right; margin-right: 20px;" class="btn btn-outline-secondary btn-sm">Brush#}
+            {#            </button>#}
+            <button id="details_aggregate" style="float: right; margin-right: 20px;" clicked = 'false' class="btn btn-outline-secondary btn-sm" onclick="details_aggregate()">Aggregate</button>
+            <button style="float: right; margin-right: 10px;" class="btn btn-outline-secondary btn-sm">Focus</button>
+        </div>
+        <div style="float: left; width: 100%; overflow-y: auto; overflow-x: hidden">
+            <svg id="svg-details"></svg>
+        </div>
+        {#        <div style="float: left; width: 100%; overflow-x: auto; overflow-y: hidden;">#}
+        {#            <svg id="svg-court-mini" style="margin-left: 5px;"></svg>#}
+        {#        </div>#}
+
+    </div>
+
+
+</div>
+<script>
+    btn_load_dataset();
+
+
+</script>
+
+</body>
+</html>

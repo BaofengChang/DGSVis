@@ -1,0 +1,100 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en" style="width: 100%; height: 99%">
+<head>
+    <meta charset="UTF-8">
+    <title>DGVis3</title>
+
+    <link rel="stylesheet" href={% static 'css/bootstrap.min.css' %}>
+    <link rel="stylesheet" href={% static 'css/divLayoutV2.css' %}>
+    <link rel="stylesheet" href={% static 'css/styleV2.css' %}>
+
+    <script src={% static 'js/jquery-3.6.0.js' %}></script>
+    <script src={% static 'js/d3.v4.js' %}></script>
+    <script src={% static 'js/bootstrap.min.js' %}></script>
+
+
+    <script src={% static 'jsV2/draw-left-view.js' %}></script>
+    <script src={% static 'jsV2/draw-left-view-matrix.js' %}></script>
+    <script src={% static 'jsV2/draw-left-view-scatterplot.js' %}></script>
+
+    <script src={% static 'jsV2/draw-center-top-view.js' %}></script>
+    <script src={% static 'jsV2/draw-center-top-view-time-bar.js' %}></script>
+    <script src={% static 'jsV2/draw-center-top-view-score-event.js' %}></script>
+    <script src={% static 'jsV2/draw-center-top-view-player.js' %}></script>
+    <script src={% static 'jsV2/draw-center-top-view-round.js' %}></script>
+
+    <script src={% static 'jsV2/draw-center-bottom-view.js' %}></script>
+    <script src={% static 'jsV2/draw-center-bottom-view-tree.js' %}></script>
+
+
+</head>
+<body>
+<div id="navbar" class="navbar">
+    <div id="system-name" class="system-name">
+        <h2 style="text-align: center; font-size: 30px;  pointer-events: none;">DGVizor</h2>
+    </div>
+    <div class="system-fengexian">
+        <h2 style="font-size: 30px">|</h2>
+    </div>
+    <div id="navigation" class="navigation">
+        <div style="float: left; width: 70px; margin-top: 7px;  pointer-events: none;">
+            <h5>Game:</h5>
+        </div>
+        <div class="game-select">
+            <select id="select-gameID" class="form-select" aria-label="Default select example"
+                    style="font-size: 15px; width: 150px; height: 35px; margin-top: 2px">
+                <option selected value="0021500003">NOP-GSW</option>
+                <option value="0021500003">a-GSW</option>
+            </select>
+        </div>
+        <div style="float: left; width: 105px; margin-top: 7px; margin-left: 100px;  pointer-events: none;">
+            <h5>Link Type:</h5>
+        </div>
+        <div style="float: left; width: 50%;">
+            <div style="font-size: 18px; margin-top: 5px" class="form-check form-check-inline">
+                <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="1" checked>
+                <label class="form-check-label" for="inlineCheckbox1">Teammates</label>
+            </div>
+            <div style="font-size: 18px; margin-top: 5px" class="form-check form-check-inline">
+                <input class="form-check-input" type="checkbox" id="inlineCheckbox2" value="2">
+                <label class="form-check-label" for="inlineCheckbox2">Opponents</label>
+            </div>
+            <div style="font-size: 18px; margin-top: 5px" class="form-check form-check-inline">
+                <input class="form-check-input" type="checkbox" id="inlineCheckbox3" value="3">
+                <label class="form-check-label" for="inlineCheckbox3">Distance(<1.2m)</label>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="left" class="left">
+    <svg id="svg-left"></svg>
+</div>
+
+<div id="center" class="center">
+    <div id="center-top" class="center-top">
+        <svg id="svg-center-top"></svg>
+    </div>
+    <div id="center-bottom" class="center-bottom">
+        <svg id="svg-center-bottom">
+{#            <g id="g-center-bottom-tree"></g>#}
+{#            <g id="g-center-bottom-court" style="background-image: url({% static 'img/nbacourt2.jpg' %}); background-size: 100%;#}
+{#                     background-repeat:no-repeat;">#}
+            </g>
+        </svg>
+    </div>
+</div>
+
+<div id="right" class="right">
+</div>
+
+<script>
+    {#画最左边的视图#}
+    init_left_view();
+    {#画中间上边的视图#}
+    init_center_top_view();
+    {#画中间下边的视图#}
+    init_center_bottom_view();
+</script>
+</body>
+</html>

@@ -1,0 +1,42 @@
+/*几个滑动条的背景色*/
+#nodeChangeSlider .ui-slider-range {
+    background-color: #0fcc45;
+}
+
+#linkChangeSlider .ui-slider-range {
+    background-color: #ccc011;
+}
+
+#timeGapSlider .ui-slider-range {
+    background-color: #1258cc;
+}
+
+#timeSliceSlider .ui-slider-range {
+    background-color: #506c6b;
+}
+
+
+/* 渐变色填充 */
+.stop-left {
+    stop-color: #ffede0; /* Indigo */
+}
+
+.stop-right {
+    stop-color: #ff2a32; /* Teal */
+}
+
+.filled1 {
+    fill: url(#fillGradient1);
+}
+
+.stop-left2 {
+    stop-color: #eff3ff; /* Indigo */
+}
+
+.stop-right2 {
+    stop-color: #08519c; /* Teal */
+}
+
+.filled2 {
+    fill: url(#fillGradient2);
+}

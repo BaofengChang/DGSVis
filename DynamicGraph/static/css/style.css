@@ -1,0 +1,26 @@
+.loading-div{
+    padding: 5px;
+    border: 2px solid #ccc;
+    border-radius: 10px;
+    pointer-events: none;
+    position: absolute;
+    width: auto;
+    left: 50%;
+    top: 100px;
+    display: none;
+    background-color: #ccc;
+}
+
+.btn-close-loading-data-div{
+    pointer-events: all;
+    float: right;
+}
+
+.gameNodeSupplementary{
+    opacity: 0.5;
+}
+
+.gameLinkSupplementary{
+    opacity: 0.5;
+}
+

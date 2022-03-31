@@ -1,0 +1,258 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en" style="width: 99%; height: 99%">
+<head>
+    <meta charset="UTF-8">
+    <title>DGVis</title>
+
+    <link rel="stylesheet" href={% static 'css/divLayout.css' %}>
+    <link rel="stylesheet" href={% static 'css/style.css' %}>
+
+    <script src={% static 'js/jquery-3.6.0.js' %}></script>
+    <script src={% static 'js/d3.v4.js' %}></script>
+
+
+    <script src={% static 'js/draw-div-players.js' %}></script>
+    <script src={% static 'js/draw-div-scatterplot.js' %}></script>
+    <script src={% static 'js/draw-div-score.js' %}></script>
+    <script src={% static 'js/draw-div-court.js' %}></script>
+</head>
+<body style="width: 100%; height: 100%">
+<div id="div_container" class="div_container">
+    <div id="div_left" class="div_left">
+        <div id="div_title" class="div_title">
+            <h3>NAME</h3>
+        </div>
+        <div id="div_player" class="div_player"></div>
+        <div id="div_scatterplot" class="div_gameScatterPlot"></div>
+
+
+    </div>
+    <div id="div_center_right" class="div_center_right">
+        <div id="div_score" class="div_score">
+            <svg id="svg_score"></svg>
+        </div>
+
+        <div id="div_center" class="div_center">
+            <div id="div_court" class="div_court">
+                <svg id="svg_court"
+                     style=" background-image: url({% static 'img/nbacourt2.jpg' %}); background-size: 100% 100%;width: 100px; height: 100px; opacity: 0">
+                </svg>
+                {#            <img style="width: 100px; height: 100px; pointer-events: none; opacity: 0;" src={% static 'img/nbacourt2.jpg' %}>#}
+            </div>
+            <div id="div_graphList" class="div_graphList"></div>
+        </div>
+        <div id="div_right" class="div_right"></div>
+    </div>
+
+
+</div>
+<script>
+
+
+
+    let positionList = [
+        {
+            "x": 57.14928,
+            "y": 6.52385,
+            "s": 9.21,
+            "sx": 3.252,
+            "sy": -51.27845,
+            "quarterTime": 715.61,
+            "roundTime": 20.02
+        },
+        {
+            "x": 60.40128,
+            "y": 5.87083,
+            "s": 8.19,
+            "sx": 2.37507,
+            "sy": -52.78168,
+            "quarterTime": 715.25,
+            "roundTime": 19.7
+        },
+        {
+            "x": 62.77635,
+            "y": 7.6196,
+            "s": 11.11,
+            "sx": -1.89439,
+            "sy": -51.63578,
+            "quarterTime": 714.88,
+            "roundTime": 19.37
+        },
+        {
+            "x": 60.88196,
+            "y": 11.14057,
+            "s": 12.79,
+            "sx": -0.19661,
+            "sy": -45.14212,
+            "quarterTime": 714.52,
+            "roundTime": 19.04
+        }
+    ]
+    let width = $('#div_court').width() - 20,
+        height = $('#div_court').height() - 20,
+        margin = {left: 10, top: 10, right: 10, bottom: 10};
+
+    // 场地视图的 宽度 和 高度
+    let courtWidth = width,
+        courtHeight = width * 50 / 94;
+
+    // 设置比例尺 x y
+    let x = d3.scaleLinear()
+        .domain([0, 94])
+        .range([0, courtWidth]);
+    let y = d3.scaleLinear()
+        .domain([0, 50])
+        .range([0, courtHeight]);
+
+    let svg = d3.select('#svg_court')
+        .style('margin-left', margin.left)
+        .style('margin-top', margin.top)
+        .style('margin-right', margin.right)
+        .style('margin-bottom', margin.bottom)
+        .style('width', courtWidth)
+        .style('height', courtHeight)
+        .style('opacity', 1);
+
+    let area = d3.area()
+        .x0(function (d) {
+            console.log(d)
+            let r = 1;
+            let pointList = getInsertPointBetweenCircleAndLine(d.x, d.y, d.x + d.sx, d.y + d.sy, d.x, d.y, r);
+            let p1 = pointList[0],
+                p2 = pointList[1];
+            let isLeft = LeftOfLine(p1, d.x, d.y, d.x + d.sx, d.y + d.sy);
+            let pleft = 0,
+                pright = 0;
+            if (isLeft) {
+                return x(p1.x)
+            } else {
+                return x(p2.x)
+            }
+        })
+        .y0(function (d) {
+            let r = 1;
+            let pointList = getInsertPointBetweenCircleAndLine(d.x, d.y, d.x + d.sx, d.y + d.sy, d.x, d.y, r);
+            let p1 = pointList[0],
+                p2 = pointList[1];
+            let isLeft = LeftOfLine(p1, d.x, d.y, d.x + d.sx, d.y + d.sy);
+            console.log(isLeft)
+            if (isLeft) {
+                return y(p1.y)
+            } else {
+                return y(p2.y)
+            }
+        })
+        .x1(function (d) {
+            let r = 1;
+            let pointList = getInsertPointBetweenCircleAndLine(d.x, d.y, d.x + d.sx, d.y + d.sy, d.x, d.y, r);
+            let p1 = pointList[0],
+                p2 = pointList[1];
+            let isLeft = LeftOfLine(p1, d.x, d.y, d.x + d.sx, d.y + d.sy);
+            if (!isLeft) {
+                return x(p1.x)
+            } else {
+                return x(p2.x)
+            }
+
+        })
+        .y1(function (d) {
+            let r = 1;
+            let pointList = getInsertPointBetweenCircleAndLine(d.x, d.y, d.x + d.sx, d.y + d.sy, d.x, d.y, r);
+            let p1 = pointList[0],
+                p2 = pointList[1];
+            let isLeft = LeftOfLine(p1, d.x, d.y, d.x + d.sx, d.y + d.sy);
+            if (!isLeft) {
+                return y(p1.y)
+            } else {
+                return y(p2.y)
+            }
+        });
+
+    svg.append('path')
+        .datum(positionList)
+        .attr('d', area);
+
+    function getInsertPointBetweenCircleAndLine(x1, y1, x2, y2, m, n, r) {
+        // console.log(x1, y1, x2, y2, m, n, r)
+        let kbArr = this.binaryEquationGetKB(x1, y1, x2, y2)
+        let k = kbArr[0]
+        let b = kbArr[1]
+
+        let aX = 1 + k * k
+        let bX = 2 * k * (b - n) - 2 * m
+        let cX = m * m + (b - n) * (b - n) - r * r
+
+        let insertPoints = []
+        let xArr = this.quadEquationGetX(aX, bX, cX)
+        xArr.forEach(x => {
+            let y = k * x + b
+            insertPoints.push({x: x, y: y})
+        })
+        return insertPoints
+    }
+
+    function binaryEquationGetKB(x1, y1, x2, y2) {
+        let k = (y1 - y2) / (x1 - x2)
+        let b = (x1 * y2 - x2 * y1) / (x1 - x2)
+        return [k, b]
+    }
+
+
+    /**
+     * 一元二次方程求根
+     * ax² + bx + c = 0
+     */
+    function quadEquationGetX(a, b, c) {
+        let xArr = []
+        let result = Math.pow(b, 2) - 4 * a * c
+        if (result > 0) {
+            xArr.push((-b + Math.sqrt(result)) / (2 * a))
+            xArr.push((-b - Math.sqrt(result)) / (2 * a))
+        } else if (result == 0) {
+            xArr.push(-b / (2 * a))
+        }
+        return xArr
+    }
+
+    /**
+     * @return {boolean}
+     */
+    function LeftOfLine(p, p1x, p1y, p2x, p2y) {
+
+        let a = (p2x-p1x)*(p.y-p1y) - (p2y-p1y)*(p.x-p1x);
+        if (a>0){
+            return true;
+        }else {
+            return false;
+        }
+
+        let tmpx = (p1x - p2x) / (p1y - p2y) * (p.y - p2y) + p2x;
+
+        if (tmpx > p.x) {
+            return true;
+        }//当tmpx>p.x的时候，说明点在线的左边，小于在右边，等于则在线上。
+        else {
+            return false;
+        }
+    }
+
+     /**
+     * @return {boolean}
+     */
+    function isLeft(p, p1x, p1y, p2x, p2y) {
+        let a = (p2x-p1x)*(p.y-p1y) - (p2y-p1y)*(p.x-p1x);
+        if (a>0){
+            return true;
+        }else {
+            return false;
+        }
+
+    }
+
+
+
+
+</script>
+</body>
+</html>

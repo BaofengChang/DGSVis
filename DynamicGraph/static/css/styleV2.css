@@ -1,0 +1,11 @@
+.jersey{
+    font-size: 15px;
+    font-weight: 500;
+}
+
+.rectBackground{
+    border-radius: 10px;
+    fill: #FFFFFF;
+    /*background-color: #FFFFFF;*/
+    pointer-events: none;
+}

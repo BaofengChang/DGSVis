@@ -1,0 +1,75 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Dynamic Graph</title>
+
+
+    {#导入css库#}
+    <link href="{% static 'css/style.css' %}" rel="stylesheet">
+
+
+    {#导入js库#}
+    <script src="{% static 'js/jquery-3.6.0.js'%}"></script>
+    <script src="{% static 'js/d3.v4.js'%}"></script>
+
+    <script src="{% static 'js/btn-loading-data-div.js'%}"></script>
+
+    <script src="{% static 'js/draw-gameGraph.js'%}"></script>
+
+
+    <script src="{% static 'js/a.js'%}"></script>
+
+
+</head>
+<body>
+<div id="loading-data-div" class="loading-div" >
+    <div style="width: 100%;"><button class="btn-close-loading-data-div" onclick="closeLoadingDataDiv()">Close</button></div>
+    <br>
+    <div style="width: 100%;">Loading data...</div>
+</div>
+<button onclick="showDiv()">show </button>
+<button onclick="drawGameGraph()" style="width: 150px">draw graph</button>
+<script>
+
+    testDrawMatrixElement();
+
+    test();
+    // getStatisticData();
+    function showDiv() {
+        console.log(111)
+        $('#loading-data-div').toggle();
+
+
+        $.ajax({
+        url: '/helloworld/',
+        method: 'GET',
+        timeout: 10000,  // 设置 延时函数
+        data:{
+            gameID: '0021500142',  // 比赛ID
+            kThreshold: 1,
+            disThreshold: 1.0
+        },
+        beforeSend: function () {
+            console.log('加载数据');
+            $('#loading-data-div').show();
+        },
+        success: function (result, error) {
+            console.log('url getGameGraph');
+            console.log(result);
+
+        },
+        complete: function () {
+            console.log('绘制完毕');
+            $('#loading-data-div').hide();
+        }
+    })
+    }
+
+
+
+</script>
+
+</body>
+</html>
