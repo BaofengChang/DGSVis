@@ -2,3 +2,4 @@
 DGSVis: Visual Analysis of Hierarchical Snapshots in Dynamic Graph
 
 
+[](https://github.com/BaofengChang/DGSVis/raw/main/Figs/teaser.pdf)
