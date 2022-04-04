@@ -1,4 +1,4 @@
-# DGSVis-ieee-vis-2022
+# DGSVis-IEEE-VIS-2022
 DGSVis: Visual Analysis of Hierarchical Snapshots in Dynamic Graph
 > This repo is the implementation of DGSVis
 
