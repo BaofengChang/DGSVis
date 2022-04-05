@@ -8,7 +8,7 @@ To help users access the insights, we design an interactive visual analysis prot
 Video Introduction: [DGSVis](https://youtu.be/kpBpfko1_zs)
 
 ## Workflow
-In this work, we present a complete three-step workflow. In the feature extraction part, we extract vectors, attributes, and indicators for each graph/snapshot. In the snapshot generation part, we propose an algorithm to generate hierarchical snapshots of dynamic graphs. In visual analysis, we design an interactive visual analysis prototype system (DGSVis).
+In this work, we present a complete three-step workflow including feature extraction, snapshot generation, and visual analysis. In the feature extraction part, we extract vectors, attributes, and indicators for each graph/snapshot. In the snapshot generation part, we propose an algorithm to generate hierarchical snapshots of dynamic graphs. In visual analysis, we design an interactive visual analysis prototype system (DGSVis).
 <img src="https://github.com/BaofengChang/DGSVis/raw/main/Figs/workflow.jpg" height="400px" width="800px">
 
 ## System Interface
